@@ -22,6 +22,9 @@ int main() {
     const int screenWidth = 1200;
     const int screenHeight = 720;
     IntDCamera();
+    InitAudioDevice();
+    Music music = LoadMusicStream("Assets/MainTheme.mp3");
+    PlayMusicStream(music);
 
     InitWindow(screenWidth, screenHeight, "RPG Game");
     SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
@@ -34,6 +37,7 @@ int main() {
 
     while (!WindowShouldClose())
     { 
+        UpdateMusicStream(music);
         if(IsKeyPressed(KEY_B)){
             if(GameState == 1){GameState = 0;}
             else{GameState = 1;Banimating = true;Banim = -700;}
