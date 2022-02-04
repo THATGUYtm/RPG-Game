@@ -8,9 +8,11 @@ Texture2D ShopTexture;
 Texture2D RoofTop;
 Texture2D SkyBox;
 Texture2D NPCCharacterSpriteSheet;
+Texture2D ToadMan;
 
 void IntTextures(){
-    CharacterSpriteSheet = LoadTexture("Assets/Character Sprite Sheet.png");
+    //CharacterSpriteSheet = LoadTexture("Assets/Character Sprite Sheet.png");
+    CharacterSpriteSheet = LoadTexture("Assets/FrogMan.png");
     NPCCharacterSpriteSheet = LoadTexture("Assets/CuteAnimeGirlCharacterSheet.png");
     BuildingTexture1 = LoadTexture("Assets/BuildingTexture1.png");
     BuildingTexture2 = LoadTexture("Assets/BuildingTexture2.png");
@@ -22,6 +24,7 @@ void IntTextures(){
     RoadTexture = LoadTexture("Assets/RoadTexture.png");
     SkyBox = LoadTexture("Assets/SkyBox.png");
     TextBoxCharacter = LoadTexture("Assets/HdCuteAnimeGirl.png");
+    ToadMan = LoadTexture("Assets/battle_frog.png");
 }
 
 void UnloadTextures(){
@@ -37,6 +40,7 @@ void UnloadTextures(){
     UnloadTexture(SkyBox);
     UnloadTexture(TextBoxCharacter);
     UnloadTexture(NPCCharacterSpriteSheet);
+    UnloadTexture(ToadMan);
 }
 
 void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, Color c, int Type){

@@ -154,7 +154,13 @@ void PlayerMovement(){
             NewTextBox(0, 0, true);
         }
     }
-    
+    if (IsKeyPressed(KEY_E) && IsTalking == false){
+        if(Player[0] > NPCQords[0]-TalkingRadius && Player[0] < NPCQords[0]+TalkingRadius
+        && Player[1] > NPCQords[1]-TalkingRadius && Player[1] < NPCQords[1]+TalkingRadius){
+            if(GameState == 1){GameState = 0;}
+            else{GameState = 1;Banimating = true;Banim = -700;}
+        }
+    }
 
     int TEMP = 0;
     if(!IsTalking){

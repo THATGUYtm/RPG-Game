@@ -3,6 +3,10 @@
 
 Texture2D TextBoxCharacter;
 
+int GameState = 0;
+float Banim;
+bool Banimating;
+
 bool Debug = false;
 
 #include "Map.c"
@@ -11,11 +15,13 @@ bool Debug = false;
 #include "Nonpc.c"
 #include "Player.c"
 #include "Render.c"
+#include "Battle System.c"
 
 int main() {
     intai();
     const int screenWidth = 1200;
     const int screenHeight = 720;
+    IntDCamera();
 
     InitWindow(screenWidth, screenHeight, "RPG Game");
     SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
@@ -27,15 +33,25 @@ int main() {
     IntTextures();
 
     while (!WindowShouldClose())
-    {
-        Nonpc();
+    { 
+        if(IsKeyPressed(KEY_B)){
+            if(GameState == 1){GameState = 0;}
+            else{GameState = 1;Banimating = true;Banim = -700;}
+        }
+        switch (GameState){
+            case 0:
+                Nonpc();
 
-        PlayerMovement();
-        
-        RenderScene();
+                PlayerMovement();
+                
+                RenderScene();
 
-        CameraUpdate();
-
+                CameraUpdate();
+                break;
+            case 1:
+                RenderBattle();
+                break;
+        }
     }
 
     UnloadTextures();

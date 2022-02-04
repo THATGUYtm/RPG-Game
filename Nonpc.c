@@ -1,10 +1,10 @@
 bool OnTask = false;
-float NPCQords[] = {3.5*MapScale, 4.9f*MapScale};
+float NPCQords[] = {3.0*MapScale, 5.2f*MapScale};
 int TargetDestination[] = {0,0};
 
 Texture2D NPCCharacterSpriteSheet;
 
-Rectangle NPCCharacterAnimationRectangle = { 5.0f, 96.0f, 18.0f, 32.0f};
+Rectangle NPCCharacterAnimationRectangle = {3.0f, 0.0f, 18.0f, 32.0f};
 
 int ind[MapHeight][MapWidth] = {
     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
