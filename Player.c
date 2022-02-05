@@ -164,7 +164,7 @@ void PlayerMovement(){
     int TEMP = 0;
     if(!IsTalking){
         //Diagonal Movement
-        if(IsKeyDown(KEY_W) && IsKeyDown(KEY_A) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_D)){
+        if((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
             CameraPos[2] -= Player[2]/1.5*DeltaTime;
             Player[1] -= Player[2]/1.5*DeltaTime;
             CameraPos[0] -= Player[2]/1.5*DeltaTime;
@@ -173,7 +173,7 @@ void PlayerMovement(){
             TEMP++;
             CollisonDetection(4);
         }
-        if(IsKeyDown(KEY_A) && !IsKeyDown(KEY_W) && IsKeyDown(KEY_S) && !IsKeyDown(KEY_D)){
+        if((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
             CameraPos[2] += Player[2]/1.5*DeltaTime;
             Player[1] += Player[2]/1.5*DeltaTime;
             CameraPos[0] -= Player[2]/1.5*DeltaTime;
@@ -182,7 +182,7 @@ void PlayerMovement(){
             TEMP++;
             CollisonDetection(7);
         }
-        if(IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_W) && IsKeyDown(KEY_D)){
+        if((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
             CameraPos[2] += Player[2]/1.5*DeltaTime;
             Player[1] += Player[2]/1.5*DeltaTime;
             CameraPos[0] += Player[2]/1.5*DeltaTime;
@@ -191,7 +191,7 @@ void PlayerMovement(){
             TEMP++;
             CollisonDetection(6);
         }
-        if(IsKeyDown(KEY_D) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_S) && IsKeyDown(KEY_W)){
+        if((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))){
             CameraPos[2] -= Player[2]/1.5*DeltaTime;
             Player[1] -= Player[2]/1.5*DeltaTime;
             CameraPos[0] += Player[2]/1.5*DeltaTime;
@@ -202,28 +202,28 @@ void PlayerMovement(){
         }
 
         //Straight Movement
-        if(IsKeyDown(KEY_W) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_D)){
+        if((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
             CameraPos[2] -= Player[2]*DeltaTime;
             Player[1] -= Player[2]*DeltaTime;
             Player[4] = 1;
             TEMP++;
             CollisonDetection(1);
         }
-        if(IsKeyDown(KEY_A) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_D)){
+        if((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))&& !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
             CameraPos[0] -= Player[2]*DeltaTime;
             Player[0] -= Player[2]*DeltaTime;
             Player[4] = 0;
             TEMP++;
             CollisonDetection(0);
         }
-        if(IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_D)){
+        if((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
             CameraPos[2] += Player[2]*DeltaTime;
             Player[1] += Player[2]*DeltaTime;
             Player[4] = 3;
             TEMP++;
             CollisonDetection(3);
         }
-        if(IsKeyDown(KEY_D) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_W)){
+        if((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))){
             CameraPos[0] += Player[2]*DeltaTime;
             Player[0] += Player[2]*DeltaTime;
             Player[4] = 2;
