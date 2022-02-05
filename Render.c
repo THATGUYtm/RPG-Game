@@ -129,8 +129,6 @@ void RenderMap(){
 }
 
 void RenderScene(){
-    BeginDrawing();
-
         ClearBackground(SKYBLUE);
 
         BeginMode3D(camera);
@@ -156,6 +154,4 @@ void RenderScene(){
         }
 
         DrawTextBox();
-
-    EndDrawing();
 }

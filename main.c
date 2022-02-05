@@ -9,6 +9,11 @@ bool Banimating;
 
 bool Debug = false;
 
+void IntBattle();
+
+int Transition = 0;
+float Alpha;
+
 #include "Map.c"
 #include "Camera.c"
 #include "TalkingToPeople.c"
@@ -16,6 +21,46 @@ bool Debug = false;
 #include "Player.c"
 #include "Render.c"
 #include "Battle System.c"
+
+void DrawTransition(){
+    switch(Transition){
+        case 1:
+            BeginMode2D(dcamera);
+                Alpha+=GetFrameTime()*4000;
+                DrawRectangle(0, Alpha, GetScreenWidth(), GetScreenHeight(), BLACK);
+            EndMode2D();
+            if(Alpha > 0){
+                Transition = 2;
+            }
+            break;
+        case 2:
+            BeginMode2D(dcamera);
+                Alpha+=GetFrameTime()*4000;
+                DrawRectangle(0, Alpha, GetScreenWidth(), GetScreenHeight(), BLACK);
+            EndMode2D();
+            if(GameState == 1){GameState = 0;}
+            else{
+                GameState = 1;
+                Banimating = true;
+                Banim = -700;
+                P1H = 0.0f;
+                P2H = 0.0f;
+                BDN = 0;
+            }
+            Transition = 3;
+            break;
+        case 3:
+            BeginMode2D(dcamera);
+                Alpha+=GetFrameTime()*2200;
+                DrawRectangle(0, Alpha, GetScreenWidth(), GetScreenHeight(), BLACK);
+            EndMode2D();
+            if(Alpha > GetScreenHeight()*2){
+                Transition = 0;
+                Alpha = 0-GetScreenHeight();
+            }
+            break;
+    }
+}
 
 int main() {
     intai();
@@ -27,7 +72,7 @@ int main() {
     PlayMusicStream(music);
 
     InitWindow(screenWidth, screenHeight, "RPG Game");
-    SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
+    SetWindowSize(GetMonitorWidth(GetCurrentMonitor()*2), GetMonitorHeight(GetCurrentMonitor()*2));
     ToggleFullscreen();
     HideCursor();
 
@@ -38,10 +83,7 @@ int main() {
     while (!WindowShouldClose())
     { 
         UpdateMusicStream(music);
-        if(IsKeyPressed(KEY_B)){
-            if(GameState == 1){GameState = 0;}
-            else{GameState = 1;Banimating = true;Banim = -700;}
-        }
+        BeginDrawing();
         switch (GameState){
             case 0:
                 Nonpc();
@@ -53,9 +95,12 @@ int main() {
                 CameraUpdate();
                 break;
             case 1:
+                BattleUpdate();
                 RenderBattle();
                 break;
         }
+        DrawTransition();
+        EndDrawing();
     }
 
     UnloadTextures();
