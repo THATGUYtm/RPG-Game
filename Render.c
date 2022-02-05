@@ -148,8 +148,7 @@ void RenderScene(){
         EndMode3D();
 
         if(Debug == true){
-            DrawText(TextFormat("%i, %i", PlayerChunk[0], PlayerChunk[1]), 10, 40, 20, BLACK);
-            DrawText(TextFormat("%f, %f", Player[0], Player[1]), 10, 80, 20, BLACK);
+            DrawText(TextFormat("%i", GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y)), 10, 40, 20, BLACK);
             DrawFPS(10, 10);
         }
 

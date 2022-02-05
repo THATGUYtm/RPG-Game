@@ -7,13 +7,14 @@ int GameState = 0;
 float Banim;
 bool Banimating;
 
-bool Debug = false;
+bool Debug = true;
 
 void IntBattle();
 
 int Transition = 0;
 float Alpha;
 
+#include "Movement.c"
 #include "Map.c"
 #include "Camera.c"
 #include "TalkingToPeople.c"

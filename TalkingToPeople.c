@@ -56,7 +56,7 @@ void DrawTextBox(){
                 TextBoxPos[1] = GetScreenHeight();
             }
         }else{
-            if(IsKeyPressed(KEY_SPACE)){
+            if(IsMKeyPressed(4)){
                 DialogNum++;
                 switch(DialogNum){
                     case 2:

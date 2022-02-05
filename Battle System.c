@@ -30,7 +30,7 @@ void DrawBattleText(){
 }
 
 void BattleUpdate(){
-    if(IsKeyPressed(KEY_SPACE)){
+    if(IsMKeyPressed(4)){
         BDN++;
         switch(BDN){
             case 3:

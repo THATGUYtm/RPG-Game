@@ -148,13 +148,13 @@ void PlayerMovement(){
 
     PlayerAnimation();
 
-    if (IsKeyPressed(KEY_SPACE) && IsTalking == false){
+    if (IsMKeyPressed(4) && IsTalking == false){
         if(Player[0] > NPCQords[0]-TalkingRadius && Player[0] < NPCQords[0]+TalkingRadius
         && Player[1] > NPCQords[1]-TalkingRadius && Player[1] < NPCQords[1]+TalkingRadius){
             NewTextBox(0, 0, true);
         }
     }
-    if (IsKeyPressed(KEY_E) && IsTalking == false){
+    if (IsMKeyPressed(5) && IsTalking == false){
         if(Player[0] > NPCQords[0]-TalkingRadius && Player[0] < NPCQords[0]+TalkingRadius
         && Player[1] > NPCQords[1]-TalkingRadius && Player[1] < NPCQords[1]+TalkingRadius){
             IntBattle();
@@ -164,7 +164,7 @@ void PlayerMovement(){
     int TEMP = 0;
     if(!IsTalking){
         //Diagonal Movement
-        if((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
+        if(IsMKeyDown(1) && IsMKeyDown(0) && !IsMKeyDown(3) && !IsMKeyDown(2)){
             CameraPos[2] -= Player[2]/1.5*DeltaTime;
             Player[1] -= Player[2]/1.5*DeltaTime;
             CameraPos[0] -= Player[2]/1.5*DeltaTime;
@@ -173,7 +173,7 @@ void PlayerMovement(){
             TEMP++;
             CollisonDetection(4);
         }
-        if((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
+        if(IsMKeyDown(0) && !IsMKeyDown(1) && IsMKeyDown(3) && !IsMKeyDown(2)){
             CameraPos[2] += Player[2]/1.5*DeltaTime;
             Player[1] += Player[2]/1.5*DeltaTime;
             CameraPos[0] -= Player[2]/1.5*DeltaTime;
@@ -182,7 +182,7 @@ void PlayerMovement(){
             TEMP++;
             CollisonDetection(7);
         }
-        if((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
+        if(IsMKeyDown(3) && !IsMKeyDown(0) && !IsMKeyDown(1) && IsMKeyDown(2)){
             CameraPos[2] += Player[2]/1.5*DeltaTime;
             Player[1] += Player[2]/1.5*DeltaTime;
             CameraPos[0] += Player[2]/1.5*DeltaTime;
@@ -191,7 +191,7 @@ void PlayerMovement(){
             TEMP++;
             CollisonDetection(6);
         }
-        if((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))){
+        if(IsMKeyDown(2) && !IsMKeyDown(0) && !IsMKeyDown(3) && IsMKeyDown(1)){
             CameraPos[2] -= Player[2]/1.5*DeltaTime;
             Player[1] -= Player[2]/1.5*DeltaTime;
             CameraPos[0] += Player[2]/1.5*DeltaTime;
@@ -202,28 +202,28 @@ void PlayerMovement(){
         }
 
         //Straight Movement
-        if((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
+        if(IsMKeyDown(1) && !IsMKeyDown(0) && !IsMKeyDown(3) && !IsMKeyDown(2)){
             CameraPos[2] -= Player[2]*DeltaTime;
             Player[1] -= Player[2]*DeltaTime;
             Player[4] = 1;
             TEMP++;
             CollisonDetection(1);
         }
-        if((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))&& !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
+        if(IsMKeyDown(0) && !IsMKeyDown(1) && !IsMKeyDown(3) && !IsMKeyDown(2)){
             CameraPos[0] -= Player[2]*DeltaTime;
             Player[0] -= Player[2]*DeltaTime;
             Player[4] = 0;
             TEMP++;
             CollisonDetection(0);
         }
-        if((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && !(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))){
+        if(IsMKeyDown(3) && !IsMKeyDown(0) && !IsMKeyDown(1) && !IsMKeyDown(2)){
             CameraPos[2] += Player[2]*DeltaTime;
             Player[1] += Player[2]*DeltaTime;
             Player[4] = 3;
             TEMP++;
             CollisonDetection(3);
         }
-        if((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && !(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))){
+        if(IsMKeyDown(2) && !IsMKeyDown(0) && !IsMKeyDown(3) && !IsMKeyDown(1)){
             CameraPos[0] += Player[2]*DeltaTime;
             Player[0] += Player[2]*DeltaTime;
             Player[4] = 2;
