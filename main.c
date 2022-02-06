@@ -9,7 +9,7 @@ int GameState = 0;
 float Banim;
 bool Banimating;
 
-bool Debug = true;
+bool Debug = false;
 
 void IntBattle();
 

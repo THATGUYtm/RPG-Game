@@ -11,6 +11,7 @@ Texture2D NPCCharacterSpriteSheet;
 Texture2D ToadMan;
 Texture2D GrassTexture;
 Texture2D WaterTexture;
+Texture2D DirtTexture;
 Texture2D MiniMap;
 
 void IntTextures(){
@@ -31,6 +32,7 @@ void IntTextures(){
     GrassTexture = LoadTexture("Assets/GrassTexture.png");
     WaterTexture = LoadTexture("Assets/WaterTexture.png");
     MiniMap = LoadTexture("Assets/MiniMap.png");
+    DirtTexture = LoadTexture("Assets/DirtTexture.png");
 }
 
 void UnloadTextures(){
@@ -48,6 +50,8 @@ void UnloadTextures(){
     UnloadTexture(NPCCharacterSpriteSheet);
     UnloadTexture(ToadMan);
     UnloadTexture(GrassTexture);
+    UnloadTexture(DirtTexture);
+    UnloadTexture(MiniMap);
     UnloadTexture(WaterTexture);
 }
 
@@ -72,6 +76,7 @@ void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, C
         case 3:DrawCubeTexture(FloorTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
         case 19:DrawCubeTexture(GrassTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
         case 20:DrawCubeTexture(WaterTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
+        case 21:DrawCubeTexture(DirtTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
         
         //Buildings
         case 1:DrawCubeTexture(BuildingTexture1, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
@@ -88,7 +93,7 @@ void RenderMap(){
     for (int i = PlayerChunk[1]-39; i < PlayerChunk[1]+2; i++){
         for (int j = PlayerChunk[0]-25; j < PlayerChunk[0]+25; j++){
             if(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-2){
-                DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
+                DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
             }else{
                 switch (BigOverWorldMap[i * OverWorldMapWidth + j]){
                     case 2:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 2);break;
@@ -135,16 +140,17 @@ void RenderMap(){
                         break;
                     
                     case 12:
-                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                        DrawNotRetardedCube(j*MapScale, -2.0f, i*MapScale, MapScale, 2.9f, MapScale, WHITE, 3);
                         break;
                     case 25:
-                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 19);
+                        DrawNotRetardedCube(j*MapScale, -2.0f, i*MapScale, MapScale, 2.7f, MapScale, WHITE, 21);
+                        DrawNotRetardedCube(j*MapScale, 0.7f, i*MapScale, MapScale, 0.2f, MapScale, WHITE, 19);
                         break;
                     case 26:
-                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
+                        DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
                         break;
                     default:
-                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
+                        DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
                         break;
                 }
             }
