@@ -3,12 +3,18 @@
 Camera2D dcamera = { 0 };
 
 float Banim = -700.0f;
+float Aanim = -700.0f;
 bool Banimating = false;
+bool Aanimating = false;
 
 float P1H = 0.0f;
 float P2H = 0.0f;
 
 int BDN = 0;
+
+bool BattleOptions = false;
+
+int CursorPos[] = {0, 1};
 
 void IntBattle(){
     if(GameState == 1){Transition = 1;}
@@ -26,15 +32,39 @@ void IntDCamera(){
 }
 
 void DrawBattleText(){
-    DrawText(BattleDialog[BDN], GetScreenWidth()*0.02, GetScreenHeight()*0.75-Banim, GetScreenHeight()/20, BLACK);
+    if(BattleOptions == false){
+        DrawText(BattleDialog[BDN], GetScreenWidth()*0.02, GetScreenHeight()*0.75-Banim, GetScreenHeight()/20, BLACK);
+    }else{
+        if(Aanimating == true){
+            Aanim+=GetFrameTime()*4000;
+            if(Aanim > 1){
+                Aanim = 1;
+                Aanimating = false;
+            }
+        }
+        DrawRectangleRounded((Rectangle){GetScreenWidth()*0.5-Aanim, GetScreenHeight()*0.73, GetScreenWidth()*0.5, GetScreenHeight()*0.24}, 0.25f, 0, (Color){132, 136, 164, 255});
+        DrawRectangleRounded((Rectangle){GetScreenWidth()*0.51-Aanim, GetScreenHeight()*0.74, GetScreenWidth()*0.5-(GetScreenWidth()*0.02), GetScreenHeight()*0.22}, 0.25f, 0, (Color){255, 255, 255, 255});
+        DrawText(BattleDialog[BDN], GetScreenWidth()*0.02, GetScreenHeight()*0.75, GetScreenHeight()/20, BLACK);
+        DrawText("ATTACK", GetScreenWidth()*0.55-Aanim, GetScreenHeight()*0.77, GetScreenHeight()/15, BLACK);
+        DrawText("DEFEND", GetScreenWidth()*0.78-Aanim, GetScreenHeight()*0.77, GetScreenHeight()/15, BLACK);
+        DrawText("ITEM", GetScreenWidth()*0.55-Aanim, GetScreenHeight()*0.87, GetScreenHeight()/15, BLACK);
+        DrawText("RUN", GetScreenWidth()*0.78-Aanim, GetScreenHeight()*0.87, GetScreenHeight()/15, BLACK);
+        DrawRectangleLinesEx((Rectangle){GetScreenWidth()*0.54 + (CursorPos[0]*GetScreenWidth()*0.23)-Aanim, GetScreenHeight()*0.755 + (CursorPos[1]*GetScreenHeight()*0.1), GetScreenWidth()*0.19, GetScreenHeight()*0.09}, GetScreenHeight()/150, BLACK); 
+    }
 }
 
 void BattleUpdate(){
-    if(IsMKeyPressed(4)){
+    if(IsMKeyPressed(0) && CursorPos[0] != 0){CursorPos[0]--;}
+    if(IsMKeyPressed(1) && CursorPos[1] != 0){CursorPos[1]--;}
+    if(IsMKeyPressed(2) && CursorPos[0] != 1){CursorPos[0]++;}
+    if(IsMKeyPressed(3) && CursorPos[1] != 1){CursorPos[1]++;}
+    if(IsMKeyPressed(4) && BattleOptions == false){
         BDN++;
         switch(BDN){
             case 3:
-                IntBattle();
+                BattleOptions = true;
+                Aanimating = true;
+                //IntBattle();
                 break;
         }
     }
