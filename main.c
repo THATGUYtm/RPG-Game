@@ -9,7 +9,7 @@ int GameState = 0;
 float Banim;
 bool Banimating;
 
-bool Debug = false;
+bool Debug = true;
 
 void IntBattle();
 
@@ -75,6 +75,8 @@ int main() {
     Music music = LoadMusicStream("Assets/MainTheme.mp3");
     PlayMusicStream(music);
 
+    SetConfigFlags(FLAG_MSAA_4X_HINT || FLAG_VSYNC_HINT); 
+
     InitWindow(screenWidth, screenHeight, "RPG Game");
     SetWindowSize(GetMonitorWidth(GetCurrentMonitor()*2), GetMonitorHeight(GetCurrentMonitor()*2));
     ToggleFullscreen();
@@ -84,10 +86,12 @@ int main() {
 
     IntTextures();
 
+    target = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+
     while (!WindowShouldClose())
     { 
         UpdateMusicStream(music);
-        BeginDrawing();
+        
         switch (GameState){
             case 0:
                 Nonpc();
@@ -99,8 +103,9 @@ int main() {
                 CameraUpdate();
                 break;
             case 1:
-                BattleUpdate();
-                RenderBattle();
+                BeginDrawing();
+                    BattleUpdate();
+                    RenderBattle();
                 break;
         }
         DrawTransition();

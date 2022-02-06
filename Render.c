@@ -11,6 +11,7 @@ Texture2D NPCCharacterSpriteSheet;
 Texture2D ToadMan;
 Texture2D GrassTexture;
 Texture2D WaterTexture;
+Texture2D MiniMap;
 
 void IntTextures(){
     //CharacterSpriteSheet = LoadTexture("Assets/Character Sprite Sheet.png");
@@ -29,6 +30,7 @@ void IntTextures(){
     ToadMan = LoadTexture("Assets/battle_frog.png");
     GrassTexture = LoadTexture("Assets/GrassTexture.png");
     WaterTexture = LoadTexture("Assets/WaterTexture.png");
+    MiniMap = LoadTexture("Assets/MiniMap.png");
 }
 
 void UnloadTextures(){
@@ -83,9 +85,9 @@ void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, C
 }
 
 void RenderMap(){
-    for (int i = PlayerChunk[1]-41; i < PlayerChunk[1]+2; i++){
-        for (int j = PlayerChunk[0]-30; j < PlayerChunk[0]+30; j++){
-            if(i < 0 || j < 0 || i > OverWorldMapHeight-2 || j > OverWorldMapWidth-2){
+    for (int i = PlayerChunk[1]-39; i < PlayerChunk[1]+2; i++){
+        for (int j = PlayerChunk[0]-25; j < PlayerChunk[0]+25; j++){
+            if(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-2){
                 DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
             }else{
                 switch (BigOverWorldMap[i * OverWorldMapWidth + j]){
@@ -150,31 +152,44 @@ void RenderMap(){
     }
 }
 
+RenderTexture2D target;
+
 void RenderScene(){
-        ClearBackground(SKYBLUE);
+        BeginTextureMode(target);
 
-        BeginMode3D(camera);
+            ClearBackground(SKYBLUE);
 
-            //DrawBillboard(camera, SkyBox, (Vector3){ Player[0] + 40.0f, 300.0f, Player[1] -700.0f }, 1500.0f, WHITE);
+            BeginMode3D(camera);
 
-            RenderMap();
+                //DrawBillboard(camera, SkyBox, (Vector3){ Player[0] + 40.0f, 300.0f, Player[1] -700.0f }, 1500.0f, WHITE);
 
-            if (Player[1] < NPCQords[1]){
-                RenderCharacter();
-                RenderNPC();
-            }else{
-                RenderNPC();
-                RenderCharacter();
-            }
+                RenderMap();
 
-        EndMode3D();
+                if (Player[1] < NPCQords[1]){
+                    RenderCharacter();
+                    RenderNPC();
+                }else{
+                    RenderNPC();
+                    RenderCharacter();
+                }
 
-        if(Debug == true){
-            DrawText(TextFormat("%i", GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y)), 10, 40, 20, BLACK);
-            DrawText(TextFormat("%i, %i", PlayerChunk[0], PlayerChunk[1]), 10, 80, 20, BLACK);
+            EndMode3D();
+
+        EndTextureMode();
+
+        BeginDrawing();
+
+            DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
+
+            DrawTextureRec(MiniMap, (Rectangle){(Player[0]*3.2)+404, (Player[1]*3.2)+224, 200, 200}, (Vector2){10, 10}, WHITE);
+            DrawRectangle(108, 108, 4, 4, BLACK);
+
+            DrawTextBox();
             
-            DrawFPS(10, 10);
-        }
-
-        DrawTextBox();
+            if(Debug == true){
+                DrawText(TextFormat("%i", GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y)), 10, 40, 20, BLACK);
+                DrawText(TextFormat("%f, %f", Player[0], Player[1]), 10, 80, 20, BLACK);
+                
+                DrawFPS(10, 10);
+            }
 }

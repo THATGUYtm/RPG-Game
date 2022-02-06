@@ -63,7 +63,7 @@ void PlayerAnimation(){
 }
 
 bool CantWalkThrough(){
-    if(Player[0] < 0 || Player[0] > (OverWorldMapWidth-1)*MapScale || Player[1] < 0 || Player[1] > (OverWorldMapHeight-1)*MapScale)
+    if(Player[0] < 0 || Player[0] > (OverWorldMapWidth-1)*MapScale || Player[1] < 0 || Player[1] > (OverWorldMapHeight)*MapScale)
         return true;
     switch(BigOverWorldMap[PlayerChunk[1] * OverWorldMapWidth + PlayerChunk[0]]){
         case 1:
@@ -273,5 +273,5 @@ void RenderCharacter(){
     }else{
         PlayerAnimation();
     }
-    DrawBillboardRec(camera, CharacterSpriteSheet, CharacterAnimationRectangle, (Vector3){ Player[0], MapScale*0.18f, Player[1] }, (Vector2){MapScale*0.1, MapScale*0.1}, WHITE);
+    DrawBillboardRec(camera, CharacterSpriteSheet, CharacterAnimationRectangle, (Vector3){ Player[0], MapScale*0.1725f, Player[1] }, (Vector2){MapScale*0.1, MapScale*0.1}, WHITE);
 }

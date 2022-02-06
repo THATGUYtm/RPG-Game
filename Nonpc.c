@@ -26,7 +26,7 @@ void intai(){
 }
 
 void RenderNPC(){
-    DrawBillboardRec(camera, NPCCharacterSpriteSheet, NPCCharacterAnimationRectangle, (Vector3){ NPCQords[0], MapScale*0.18f, NPCQords[1] }, (Vector2){MapScale*0.1, MapScale*0.1}, WHITE);
+    DrawBillboardRec(camera, NPCCharacterSpriteSheet, NPCCharacterAnimationRectangle, (Vector3){ NPCQords[0], MapScale*0.1725f, NPCQords[1] }, (Vector2){MapScale*0.1, MapScale*0.1}, WHITE);
 
 }
 
