@@ -9,6 +9,8 @@ Texture2D RoofTop;
 Texture2D SkyBox;
 Texture2D NPCCharacterSpriteSheet;
 Texture2D ToadMan;
+Texture2D GrassTexture;
+Texture2D WaterTexture;
 
 void IntTextures(){
     //CharacterSpriteSheet = LoadTexture("Assets/Character Sprite Sheet.png");
@@ -25,6 +27,8 @@ void IntTextures(){
     SkyBox = LoadTexture("Assets/SkyBox.png");
     TextBoxCharacter = LoadTexture("Assets/HdCuteAnimeGirl.png");
     ToadMan = LoadTexture("Assets/battle_frog.png");
+    GrassTexture = LoadTexture("Assets/GrassTexture.png");
+    WaterTexture = LoadTexture("Assets/WaterTexture.png");
 }
 
 void UnloadTextures(){
@@ -41,6 +45,8 @@ void UnloadTextures(){
     UnloadTexture(TextBoxCharacter);
     UnloadTexture(NPCCharacterSpriteSheet);
     UnloadTexture(ToadMan);
+    UnloadTexture(GrassTexture);
+    UnloadTexture(WaterTexture);
 }
 
 void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, Color c, int Type){
@@ -62,6 +68,8 @@ void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, C
         
         //Floor
         case 3:DrawCubeTexture(FloorTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
+        case 19:DrawCubeTexture(GrassTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
+        case 20:DrawCubeTexture(WaterTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
         
         //Buildings
         case 1:DrawCubeTexture(BuildingTexture1, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
@@ -75,55 +83,69 @@ void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, C
 }
 
 void RenderMap(){
-    for (int i = 0; i < MapHeight; i++){
-        for (int j = 0; j < MapWidth; j++){
-            //if(j == PlayerChunk[0] && i == PlayerChunk[1]){
-                DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, YELLOW, 0);
-            //}else{
-                switch (OverWorldMap[i][j]){
-                    case 1:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 2);break;
-                    case 6:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 7);break;
-                    case 7:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 8);break;
-                    case 8:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 9);break;
-                    case 10:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 12);break;
-                    case 11:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 13);break;
-                    case 12:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 14);break;
-                    case 13:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 15);break;
-                    case 14:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 16);break;
-                    case 15:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 17);break;
-                    case 16:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 18);break;
+    for (int i = PlayerChunk[1]-41; i < PlayerChunk[1]+2; i++){
+        for (int j = PlayerChunk[0]-30; j < PlayerChunk[0]+30; j++){
+            if(i < 0 || j < 0 || i > OverWorldMapHeight-2 || j > OverWorldMapWidth-2){
+                DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
+            }else{
+                switch (BigOverWorldMap[i * OverWorldMapWidth + j]){
+                    case 2:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 2);break;
+                    case 1:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 7);break;
+                    case 6:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 8);break;
+                    case 3:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 9);break;
+                    case 4:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 12);break;
+                    case 5:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 13);break;
+                    case 8:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 14);break;
+                    case 9:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 15);break;
+                    case 10:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 16);break;
+                    case 7:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 17);break;
+                    case 11:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 18);break;
 
-                    case 2:
+                    case 13:
                         DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.25, MapScale-(MapScale*0.04), WHITE, 1);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.25, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
                         break;
-                    case 3:
+                    case 14:
                         DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.4, MapScale-(MapScale*0.04), WHITE, 4);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.4, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
                         break;
-                    case 4:
+                    case 15:
                         DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.35, MapScale-(MapScale*0.04), WHITE, 5);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.35, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
                         break;
-                    case 5:
+                    case 16:
                         DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.45, MapScale-(MapScale*0.04), WHITE, 6);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.45, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
                         break;
-                    case 9:
+                    case 17:
                         DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.4, MapScale-(MapScale*0.04), WHITE, 10);
                         DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*0.4, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
                         break;
                     
-                    default:
+                    case 12:
                         DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
                         break;
+                    case 25:
+                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 19);
+                        break;
+                    case 26:
+                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
+                        break;
+                    default:
+                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
+                        break;
                 }
-            //}
+            }
         }
     }
 }
@@ -149,6 +171,8 @@ void RenderScene(){
 
         if(Debug == true){
             DrawText(TextFormat("%i", GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y)), 10, 40, 20, BLACK);
+            DrawText(TextFormat("%i, %i", PlayerChunk[0], PlayerChunk[1]), 10, 80, 20, BLACK);
+            
             DrawFPS(10, 10);
         }
 

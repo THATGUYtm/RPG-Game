@@ -7,7 +7,7 @@
 3 = Animation Timer
 4 = Direction
 */
-float Player[] = {3.5*MapScale, 4.9f*MapScale, MapScale*0.004, 0.0f, 3.0f};
+float Player[] = {6*MapScale, 6*MapScale, MapScale*0.004, 0.0f, 3.0f};
 Texture2D CharacterSpriteSheet;
 Rectangle CharacterAnimationRectangle = { 5.0f, 96.0f, 18.0f, 32.0f};
 int PlayerChunk[2];
@@ -63,17 +63,27 @@ void PlayerAnimation(){
 }
 
 bool CantWalkThrough(){
-    switch(OverWorldMap[PlayerChunk[1]][PlayerChunk[0]]){
+    if(Player[0] < 0 || Player[0] > (OverWorldMapWidth-1)*MapScale || Player[1] < 0 || Player[1] > (OverWorldMapHeight-1)*MapScale)
+        return true;
+    switch(BigOverWorldMap[PlayerChunk[1] * OverWorldMapWidth + PlayerChunk[0]]){
+        case 1:
         case 2:
         case 3:
         case 4:
         case 5:
+        case 6:
+        case 7:
+        case 8:
         case 9:
-            return true;
+        case 10:
+        case 11:
+        case 12:
+        case 25:
+            return false;
             break;
         
         default:
-            return false;
+            return true;
             break;
     }
 }

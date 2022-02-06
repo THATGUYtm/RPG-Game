@@ -1,13 +1,15 @@
 #define MapScale 10
 #include "raylib.h"
+#include "raymath.h"
 
 Texture2D TextBoxCharacter;
+Model Map;
 
 int GameState = 0;
 float Banim;
 bool Banimating;
 
-bool Debug = true;
+bool Debug = false;
 
 void IntBattle();
 
@@ -16,6 +18,7 @@ float Alpha;
 
 #include "Movement.c"
 #include "Map.c"
+#include "OverworldMap.c"
 #include "Camera.c"
 #include "TalkingToPeople.c"
 #include "Nonpc.c"

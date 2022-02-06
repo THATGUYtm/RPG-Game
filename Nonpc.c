@@ -1,5 +1,5 @@
 bool OnTask = false;
-float NPCQords[] = {3.0*MapScale, 5.2f*MapScale};
+float NPCQords[] = {5.2*MapScale, 5.2f*MapScale};
 int TargetDestination[] = {0,0};
 
 Texture2D NPCCharacterSpriteSheet;
