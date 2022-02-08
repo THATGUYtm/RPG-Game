@@ -7,7 +7,7 @@
 3 = Animation Timer
 4 = Direction
 */
-float Player[] = {6*MapScale, 6*MapScale, MapScale*0.004, 0.0f, 3.0f};
+float Player[] = {2 *MapScale, 2*MapScale, MapScale*0.04, 0.0f, 3.0f};
 Texture2D CharacterSpriteSheet;
 Rectangle CharacterAnimationRectangle = { 5.0f, 96.0f, 18.0f, 32.0f};
 int PlayerChunk[2];
@@ -65,33 +65,50 @@ void PlayerAnimation(){
 bool CantWalkThrough(){
     if(Player[0] < 0 || Player[0] > (OverWorldMapWidth-1)*MapScale || Player[1] < 0 || Player[1] > (OverWorldMapHeight)*MapScale)
         return true;
-    switch(BigOverWorldMap[PlayerChunk[1] * OverWorldMapWidth + PlayerChunk[0]]){
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 25:
-            return false;
-            break;
-        
-        default:
-            return true;
-            break;
+    if(TileSet == 0){
+        switch(BigOverWorldMap[PlayerChunk[1] * OverWorldMapWidth + PlayerChunk[0]]){
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 25:
+                return false;
+                break;
+        }
+    }else if(TileSet == 1){
+        switch(BigOverWorldMap[PlayerChunk[1] * OverWorldMapWidth + PlayerChunk[0]]){
+            case 13:
+                return false;
+                break;
+        }
+        if(PlayerChunk[1] >= 28){
+            SwitchMap(0);
+            Player[0] = 4 * MapScale + (MapScale/2);
+            Player[1] = 6 * MapScale;
+            CameraPos[0] = Player[0];
+            CameraPos[2] = MapScale*0.9 + Player[1];
+        }
     }
+    return true;
 }
 
 void CollisonDetection(int dir){
     float DeltaTime = GetFrameTime()*100;
-    PlayerChunk[0] = (int)Player[0]/MapScale;
-    PlayerChunk[1] = (int)Player[1]/MapScale;
+    if(TileSet == 0){
+        PlayerChunk[0] = (int)Player[0]/MapScale;
+        PlayerChunk[1] = (int)Player[1]/MapScale;
+    }else{
+        PlayerChunk[0] = (int)Player[0]/(MapScale/2);
+        PlayerChunk[1] = (int)Player[1]/(MapScale/2);
+    }
     switch (dir){
         case 0:
             if(CantWalkThrough()){
@@ -252,8 +269,13 @@ void PlayerMovement(){
 
 void RenderCharacter(){
 
-    PlayerChunk[0] = (int)Player[0]/MapScale;
-    PlayerChunk[1] = (int)Player[1]/MapScale;
+    if(TileSet == 0){
+        PlayerChunk[0] = (int)Player[0]/MapScale;
+        PlayerChunk[1] = (int)Player[1]/MapScale;
+    }else{
+        PlayerChunk[0] = (int)Player[0]/(MapScale/2);
+        PlayerChunk[1] = (int)Player[1]/(MapScale/2);
+    }
 
     if(IsWalking == false){
         switch((int)Player[4]){

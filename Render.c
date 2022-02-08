@@ -13,6 +13,8 @@ Texture2D GrassTexture;
 Texture2D WaterTexture;
 Texture2D DirtTexture;
 Texture2D MiniMap;
+Texture2D WoodFloorTexture;
+Texture2D WallTexture;
 
 void IntTextures(){
     //CharacterSpriteSheet = LoadTexture("Assets/Character Sprite Sheet.png");
@@ -33,6 +35,8 @@ void IntTextures(){
     WaterTexture = LoadTexture("Assets/WaterTexture.png");
     MiniMap = LoadTexture("Assets/MiniMap.png");
     DirtTexture = LoadTexture("Assets/DirtTexture.png");
+    WoodFloorTexture = LoadTexture("Assets/WoodFloorTexture.png");
+    WallTexture = LoadTexture("Assets/Wall.png");
 }
 
 void UnloadTextures(){
@@ -53,6 +57,8 @@ void UnloadTextures(){
     UnloadTexture(DirtTexture);
     UnloadTexture(MiniMap);
     UnloadTexture(WaterTexture);
+    UnloadTexture(WoodFloorTexture);
+    UnloadTexture(WallTexture);
 }
 
 void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, Color c, int Type){
@@ -86,72 +92,90 @@ void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, C
         case 10:DrawCubeTexture(ShopTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
         case 11:DrawCubeTexture(RoofTop, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
         
+        case 22:DrawCubeTexture(WoodFloorTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
+        case 23:DrawCubeTexture(WallTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
     }
 }
 
 void RenderMap(){
-    for (int i = PlayerChunk[1]-39; i < PlayerChunk[1]+2; i++){
+    for (int i = PlayerChunk[1]-39; i < PlayerChunk[1]+4; i++){
         for (int j = PlayerChunk[0]-25; j < PlayerChunk[0]+25; j++){
-            if(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-2){
-                DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
-            }else{
-                switch (BigOverWorldMap[i * OverWorldMapWidth + j]){
-                    case 2:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 2);break;
-                    case 1:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 7);break;
-                    case 6:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 8);break;
-                    case 3:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 9);break;
-                    case 4:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 12);break;
-                    case 5:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 13);break;
-                    case 8:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 14);break;
-                    case 9:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 15);break;
-                    case 10:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 16);break;
-                    case 7:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 17);break;
-                    case 11:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 18);break;
+            if(TileSet == 0){
+                if(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-2){
+                    DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
+                }else{
+                    switch (BigOverWorldMap[i * OverWorldMapWidth + j]){
+                        case 2:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 2);break;
+                        case 1:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 7);break;
+                        case 6:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 8);break;
+                        case 3:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 9);break;
+                        case 4:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 12);break;
+                        case 5:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 13);break;
+                        case 8:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 14);break;
+                        case 9:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 15);break;
+                        case 10:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 16);break;
+                        case 7:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 17);break;
+                        case 11:DrawNotRetardedCube(j*MapScale, -0.1f, i*MapScale, MapScale, 1.0f, MapScale, WHITE, 18);break;
 
-                    case 13:
-                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.25, MapScale-(MapScale*0.04), WHITE, 1);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.25, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
-                        break;
-                    case 14:
-                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.4, MapScale-(MapScale*0.04), WHITE, 4);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.4, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
-                        break;
-                    case 15:
-                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.35, MapScale-(MapScale*0.04), WHITE, 5);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.35, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
-                        break;
-                    case 16:
-                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.45, MapScale-(MapScale*0.04), WHITE, 6);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.45, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
-                        break;
-                    case 17:
-                        DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.4, MapScale-(MapScale*0.04), WHITE, 10);
-                        DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*0.4, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
-                        break;
-                    
-                    case 12:
-                        DrawNotRetardedCube(j*MapScale, -2.0f, i*MapScale, MapScale, 2.9f, MapScale, WHITE, 3);
-                        break;
-                    case 25:
-                        DrawNotRetardedCube(j*MapScale, -2.0f, i*MapScale, MapScale, 2.7f, MapScale, WHITE, 21);
-                        DrawNotRetardedCube(j*MapScale, 0.7f, i*MapScale, MapScale, 0.2f, MapScale, WHITE, 19);
-                        break;
-                    case 26:
-                        DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
-                        break;
-                    default:
-                        DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
-                        break;
+                        case 13:
+                            DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.25, MapScale-(MapScale*0.04), WHITE, 1);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.25, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
+                            break;
+                        case 14:
+                            DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.4, MapScale-(MapScale*0.04), WHITE, 4);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.4, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
+                            break;
+                        case 15:
+                            DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.35, MapScale-(MapScale*0.04), WHITE, 5);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.35, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
+                            break;
+                        case 16:
+                            DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*1.45, MapScale-(MapScale*0.04), WHITE, 6);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*1.45, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
+                            break;
+                        case 17:
+                            DrawNotRetardedCube(j*MapScale, 0.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.04), 0.0f, i*MapScale+(MapScale*0.04), MapScale-(MapScale*0.08), 1, MapScale-(MapScale*0.08), BLACK, 3);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), 0.0f, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.4, MapScale-(MapScale*0.04), WHITE, 10);
+                            DrawNotRetardedCube(j*MapScale+(MapScale*0.02), MapScale*0.4, i*MapScale+(MapScale*0.02), MapScale-(MapScale*0.04), MapScale*0.005, MapScale-(MapScale*0.04), WHITE, 11);
+                            break;
+                        
+                        case 12:
+                            DrawNotRetardedCube(j*MapScale, -2.0f, i*MapScale, MapScale, 2.9f, MapScale, WHITE, 3);
+                            break;
+                        case 25:
+                            DrawNotRetardedCube(j*MapScale, -2.0f, i*MapScale, MapScale, 2.7f, MapScale, WHITE, 21);
+                            DrawNotRetardedCube(j*MapScale, 0.7f, i*MapScale, MapScale, 0.2f, MapScale, WHITE, 19);
+                            break;
+                        case 26:
+                            DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
+                            break;
+                        default:
+                            DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
+                            break;
+                    }
+                }
+            }else if(TileSet == 1){
+                if(!(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-2)){
+                    switch (BigOverWorldMap[i * OverWorldMapWidth + j]){
+                        case 13:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2), 1.0f, (MapScale/2), WHITE, 22);break;
+
+                        case 1:DrawNotRetardedCube(j*(MapScale/2)+((MapScale/2)*0.8), -0.1f, i*(MapScale/2), (MapScale/2)*0.2, (MapScale/2), (MapScale/2), WHITE, 23);break;
+                        case 2:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2)+((MapScale/2)*0.8), (MapScale/2), (MapScale/2), (MapScale/2)*0.2, WHITE, 23);break;
+                        case 3:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2)*0.2, (MapScale/2), (MapScale/2), WHITE, 23);break;
+                        case 4:
+                            if(Player[1] > i*(MapScale/2)+(MapScale/5))
+                                DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2), (MapScale/2), (MapScale/2)*0.2, WHITE, 23);
+                            break;
+                    }
                 }
             }
         }
@@ -163,7 +187,7 @@ RenderTexture2D target;
 void RenderScene(){
         BeginTextureMode(target);
 
-            ClearBackground(SKYBLUE);
+            ClearBackground(BackgroundColor);
 
             BeginMode3D(camera);
 
@@ -194,7 +218,7 @@ void RenderScene(){
             
             if(Debug == true){
                 DrawText(TextFormat("%i", GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y)), 10, 40, 20, BLACK);
-                DrawText(TextFormat("%f, %f", Player[0], Player[1]), 10, 80, 20, BLACK);
+                DrawText(TextFormat("%i, %i", PlayerChunk[0], PlayerChunk[1]), 10, 80, 20, BLACK);
                 
                 DrawFPS(10, 10);
             }

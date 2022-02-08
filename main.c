@@ -9,7 +9,7 @@ int GameState = 0;
 float Banim;
 bool Banimating;
 
-bool Debug = false;
+bool Debug = true;
 
 void IntBattle();
 
@@ -87,6 +87,8 @@ int main() {
     IntTextures();
 
     target = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+
+    SwitchMap(1);
 
     while (!WindowShouldClose())
     { 
