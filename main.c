@@ -89,7 +89,7 @@ int main() {
 
     target = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
-    SwitchMap(0);
+    SwitchMap(1);
 
     while (!WindowShouldClose())
     { 

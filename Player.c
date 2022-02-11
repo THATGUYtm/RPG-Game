@@ -71,9 +71,10 @@ bool CantWalkThrough(float x, float y){
         cx = (int)x/(MapScale/2);
         cy = (int)y/(MapScale/2);
     }
-    if(x < 0 || x > (OverWorldMapWidth)*MapScale || y < 0 || y > (OverWorldMapHeight)*MapScale)
-        return true;
+    
     if(TileSet == 0){
+        if(x < 0 || x > (OverWorldMapWidth)*MapScale || y < 0 || y > (OverWorldMapHeight)*MapScale)
+            return true;
         switch(BigOverWorldMap[cy * OverWorldMapWidth + cx]){
             case 1:
             case 2:
@@ -92,17 +93,19 @@ bool CantWalkThrough(float x, float y){
                 break;
         }
     }else if(TileSet == 1){
-        switch(BigOverWorldMap[cx * OverWorldMapWidth + cy]){
+        if(x < 0 || x > (OverWorldMapWidth)*(MapScale/2) || y < 0 || y > (OverWorldMapHeight)*(MapScale/2))
+            return true;
+        switch(BigOverWorldMap[cy * OverWorldMapWidth + cx]){
+            case 14:
+                SwitchMap(0);
+                Player[0] = 4 * MapScale + (MapScale/2);
+                Player[1] = 6 * MapScale;
+                CameraPos[0] = Player[0];
+                CameraPos[2] = MapScale*0.9 + Player[1];
+                break;
             case 13:
                 return false;
                 break;
-        }
-        if(cx >= 28){
-            SwitchMap(0);
-            Player[0] = 4 * MapScale + (MapScale/2);
-            Player[1] = 6 * MapScale;
-            CameraPos[0] = Player[0];
-            CameraPos[2] = MapScale*0.9 + Player[1];
         }
     }
     return true;

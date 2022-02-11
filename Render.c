@@ -17,6 +17,8 @@ Texture2D DirtTexture;
 Texture2D MiniMap;
 Texture2D WoodFloorTexture;
 Texture2D WallTexture;
+Texture2D CarpetTexture;
+Texture2D IntMiniMap;
 
 void IntTextures(){
     //CharacterSpriteSheet = LoadTexture("Assets/Character Sprite Sheet.png");
@@ -39,6 +41,8 @@ void IntTextures(){
     DirtTexture = LoadTexture("Assets/DirtTexture.png");
     WoodFloorTexture = LoadTexture("Assets/WoodFloorTexture.png");
     WallTexture = LoadTexture("Assets/Wall.png");
+    CarpetTexture = LoadTexture("Assets/CarpetTexture.png");
+    IntMiniMap = LoadTexture("Assets/MiniMapInt.png");
 }
 
 void UnloadTextures(){
@@ -61,6 +65,8 @@ void UnloadTextures(){
     UnloadTexture(WaterTexture);
     UnloadTexture(WoodFloorTexture);
     UnloadTexture(WallTexture);
+    UnloadTexture(CarpetTexture);
+    UnloadTexture(IntMiniMap);
 }
 
 void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, Color c, int Type){
@@ -96,6 +102,7 @@ void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, C
         
         case 22:DrawCubeTexture(WoodFloorTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
         case 23:DrawCubeTexture(WallTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
+        case 24:DrawCubeTexture(CarpetTexture, (Vector3){x + (w / 2), y + (h / 2), z + (l / 2)}, w, h, l, c);break;
     }
 }
 
@@ -166,18 +173,35 @@ void RenderMap(){
                     }
                 }
             }else if(TileSet == 1){
+                float T3 = MapScale/2;
                 if(!(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-1)){
                     switch (BigOverWorldMap[i * OverWorldMapWidth + j]){
-                        case 13:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2), 1.0f, (MapScale/2), WHITE, 22);break;
+                        case 13:DrawNotRetardedCube(j*T3, -0.1f, i*T3, T3, 1.0f, T3, WHITE, 22);break;
+                        case 14:DrawNotRetardedCube(j*T3, -0.1f, i*T3, T3, 1.0f, T3, WHITE, 24);break;
 
-                        //case 1:DrawNotRetardedCube(j*(MapScale/2)+((MapScale/2)*0.8), -0.1f, i*(MapScale/2), (MapScale/2)*0.2, (MapScale/2), (MapScale/2), WHITE, 23);break;
-                        //case 2:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2)+((MapScale/2)*0.8), (MapScale/2), (MapScale/2), (MapScale/2)*0.2, WHITE, 23);break;
-                        //case 3:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2)*0.2, (MapScale/2), (MapScale/2), WHITE, 23);break;
+                        case 1:DrawNotRetardedCube(j*T3+(T3*0.8), -0.1f, i*T3, T3*0.2, T3, T3, WHITE, 23);break;
+                        case 2:DrawNotRetardedCube(j*T3, -0.1f, i*T3+(T3*0.8), T3, T3, T3*0.2, WHITE, 23);break;
+                        case 3:DrawNotRetardedCube(j*T3, -0.1f, i*T3, T3*0.2, T3, T3, WHITE, 23);break;
                         case 4:
-                            if(Player[1] > i*(MapScale/2)+(MapScale/5))
-                                //DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2), (MapScale/2), (MapScale/2)*0.2, WHITE, 23);
+                            if(Player[1] > i*T3+(MapScale/5))
+                                DrawNotRetardedCube(j*T3, -0.1f, i*T3, T3, T3, T3*0.2, WHITE, 23);
                             break;
-                        case 5:DrawNotRetardedCube(j*(MapScale/2)+((MapScale/2)*0.8), -0.1f, i*(MapScale/2)+((MapScale/2)*0.8), (MapScale/2)*0.2, (MapScale/2), (MapScale/2)*0.2, WHITE, 23);break;
+                        case 5:DrawNotRetardedCube(j*T3+(T3*0.8), -0.1f, i*T3+(T3*0.8), T3*0.2, T3, T3*0.2, WHITE, 23);break;
+                        case 6:DrawNotRetardedCube(j*T3, -0.1f, i*T3, T3*0.2, T3, T3*0.2, WHITE, 23);break;
+                        case 7:DrawNotRetardedCube(j*T3+(T3*0.8), -0.1f, i*T3, T3*0.2, T3, T3*0.2, WHITE, 23);break;
+                        case 8:DrawNotRetardedCube(j*T3, -0.1f, i*T3+(T3*0.8), T3*0.2, T3, T3*0.2, WHITE, 23);break;
+                        case 9:DrawNotRetardedCube(j*T3+(T3*0.2), -0.1f, i*T3+(T3*0.8), T3*0.8, T3, T3*0.2, WHITE, 23);
+                               DrawNotRetardedCube(j*T3, -0.1f, i*T3, T3*0.2, T3, T3, WHITE, 23);break;
+                        case 10:DrawNotRetardedCube(j*T3, -0.1f, i*T3+(T3*0.8), T3*0.8, T3, T3*0.2, WHITE, 23);
+                                DrawNotRetardedCube(j*T3+(T3*0.8), -0.1f, i*T3, T3*0.2, T3, T3, WHITE, 23);break;
+                        case 11:DrawNotRetardedCube(j*T3, -0.1f, i*T3, T3*0.2, T3, T3, WHITE, 23);
+                                if(Player[1] > i*T3+(MapScale/5))
+                                    DrawNotRetardedCube(j*T3+(T3*0.2), -0.1f, i*T3, T3*0.8, T3, T3*0.2, WHITE, 23);
+                                break;
+                        case 12:DrawNotRetardedCube(j*T3+(T3*0.8), -0.1f, i*T3, T3*0.2, T3, T3, WHITE, 23);
+                                if(Player[1] > i*T3+(MapScale/5))
+                                    DrawNotRetardedCube(j*T3, -0.1f, i*T3, T3*0.8, T3, T3*0.2, WHITE, 23);
+                                break;    
                     }
                 }
             }
@@ -214,14 +238,18 @@ void RenderScene(){
 
             DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
 
-            DrawTextureRec(MiniMap, (Rectangle){(Player[0]*3.2)+404, (Player[1]*3.2)+224, 200, 200}, (Vector2){10, 10}, WHITE);
-            DrawRectangle(108, 108, 4, 4, BLACK);
+            if(TileSet == 0)
+                DrawTextureRec(MiniMap, (Rectangle){(Player[0]*3.2)+404, (Player[1]*3.2)+224, 200, 200}, (Vector2){10, 10}, WHITE);
+            if(TileSet == 1)
+                DrawTextureRec(IntMiniMap, (Rectangle){(Player[0]*6.4)+404, (Player[1]*6.4)+224, 200, 200}, (Vector2){10, 10}, WHITE);
+            DrawRectangle(107, 107, 6, 6, BLACK);
+            DrawRectangle(108, 108, 4, 4, GREEN);
 
             DrawTextBox();
             
             if(Debug == true){
                 DrawText(TextFormat("%i", GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y)), 10, 40, 20, BLACK);
-                DrawText(TextFormat("%i, %i", PlayerChunk[0], PlayerChunk[1]), 10, 80, 20, BLACK);
+                DrawText(TextFormat("%f, %f", Player[0], Player[1]), 10, 80, 20, WHITE);
                 DrawRectangle(8, 8, 100, 30, BLACK);
                 DrawFPS(10, 10);
             }
