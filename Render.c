@@ -1,3 +1,5 @@
+#define RenderDistance 1
+
 Texture2D BuildingTexture1;
 Texture2D BuildingTexture2;
 Texture2D BuildingTexture3;
@@ -98,10 +100,10 @@ void DrawNotRetardedCube(float x, float y, float z, float w, float h, float l, C
 }
 
 void RenderMap(){
-    for (int i = PlayerChunk[1]-39; i < PlayerChunk[1]+4; i++){
-        for (int j = PlayerChunk[0]-25; j < PlayerChunk[0]+25; j++){
+    for (int i = PlayerChunk[1]-(39*RenderDistance); i < PlayerChunk[1]+4; i++){
+        for (int j = PlayerChunk[0]-(25*RenderDistance); j < PlayerChunk[0]+(25*RenderDistance); j++){
             if(TileSet == 0){
-                if(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-2){
+                if(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-1){
                     DrawNotRetardedCube(j*MapScale, -1.0f, i*MapScale, MapScale, 0.9f, MapScale, WHITE, 20);
                 }else{
                     switch (BigOverWorldMap[i * OverWorldMapWidth + j]){
@@ -164,17 +166,18 @@ void RenderMap(){
                     }
                 }
             }else if(TileSet == 1){
-                if(!(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-2)){
+                if(!(i < 0 || j < 0 || i > OverWorldMapHeight-1 || j > OverWorldMapWidth-1)){
                     switch (BigOverWorldMap[i * OverWorldMapWidth + j]){
                         case 13:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2), 1.0f, (MapScale/2), WHITE, 22);break;
 
-                        case 1:DrawNotRetardedCube(j*(MapScale/2)+((MapScale/2)*0.8), -0.1f, i*(MapScale/2), (MapScale/2)*0.2, (MapScale/2), (MapScale/2), WHITE, 23);break;
-                        case 2:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2)+((MapScale/2)*0.8), (MapScale/2), (MapScale/2), (MapScale/2)*0.2, WHITE, 23);break;
-                        case 3:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2)*0.2, (MapScale/2), (MapScale/2), WHITE, 23);break;
+                        //case 1:DrawNotRetardedCube(j*(MapScale/2)+((MapScale/2)*0.8), -0.1f, i*(MapScale/2), (MapScale/2)*0.2, (MapScale/2), (MapScale/2), WHITE, 23);break;
+                        //case 2:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2)+((MapScale/2)*0.8), (MapScale/2), (MapScale/2), (MapScale/2)*0.2, WHITE, 23);break;
+                        //case 3:DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2)*0.2, (MapScale/2), (MapScale/2), WHITE, 23);break;
                         case 4:
                             if(Player[1] > i*(MapScale/2)+(MapScale/5))
-                                DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2), (MapScale/2), (MapScale/2)*0.2, WHITE, 23);
+                                //DrawNotRetardedCube(j*(MapScale/2), -0.1f, i*(MapScale/2), (MapScale/2), (MapScale/2), (MapScale/2)*0.2, WHITE, 23);
                             break;
+                        case 5:DrawNotRetardedCube(j*(MapScale/2)+((MapScale/2)*0.8), -0.1f, i*(MapScale/2)+((MapScale/2)*0.8), (MapScale/2)*0.2, (MapScale/2), (MapScale/2)*0.2, WHITE, 23);break;
                     }
                 }
             }
@@ -219,7 +222,7 @@ void RenderScene(){
             if(Debug == true){
                 DrawText(TextFormat("%i", GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y)), 10, 40, 20, BLACK);
                 DrawText(TextFormat("%i, %i", PlayerChunk[0], PlayerChunk[1]), 10, 80, 20, BLACK);
-                
+                DrawRectangle(8, 8, 100, 30, BLACK);
                 DrawFPS(10, 10);
             }
 }

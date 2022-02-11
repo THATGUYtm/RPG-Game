@@ -7,7 +7,7 @@
 3 = Animation Timer
 4 = Direction
 */
-float Player[] = {2 *MapScale, 2*MapScale, MapScale*0.04, 0.0f, 3.0f};
+float Player[] = {6 *MapScale, 6*MapScale, MapScale*0.02, 0.0f, 3.0f};
 Texture2D CharacterSpriteSheet;
 Rectangle CharacterAnimationRectangle = { 5.0f, 96.0f, 18.0f, 32.0f};
 int PlayerChunk[2];
@@ -62,11 +62,19 @@ void PlayerAnimation(){
     }
 }
 
-bool CantWalkThrough(){
-    if(Player[0] < 0 || Player[0] > (OverWorldMapWidth-1)*MapScale || Player[1] < 0 || Player[1] > (OverWorldMapHeight)*MapScale)
+bool CantWalkThrough(float x, float y){
+    int cx, cy;
+    if(TileSet == 0){
+        cx = (int)x/MapScale;
+        cy = (int)y/MapScale;
+    }else{
+        cx = (int)x/(MapScale/2);
+        cy = (int)y/(MapScale/2);
+    }
+    if(x < 0 || x > (OverWorldMapWidth)*MapScale || y < 0 || y > (OverWorldMapHeight)*MapScale)
         return true;
     if(TileSet == 0){
-        switch(BigOverWorldMap[PlayerChunk[1] * OverWorldMapWidth + PlayerChunk[0]]){
+        switch(BigOverWorldMap[cy * OverWorldMapWidth + cx]){
             case 1:
             case 2:
             case 3:
@@ -84,12 +92,12 @@ bool CantWalkThrough(){
                 break;
         }
     }else if(TileSet == 1){
-        switch(BigOverWorldMap[PlayerChunk[1] * OverWorldMapWidth + PlayerChunk[0]]){
+        switch(BigOverWorldMap[cx * OverWorldMapWidth + cy]){
             case 13:
                 return false;
                 break;
         }
-        if(PlayerChunk[1] >= 28){
+        if(cx >= 28){
             SwitchMap(0);
             Player[0] = 4 * MapScale + (MapScale/2);
             Player[1] = 6 * MapScale;
@@ -98,75 +106,6 @@ bool CantWalkThrough(){
         }
     }
     return true;
-}
-
-void CollisonDetection(int dir){
-    float DeltaTime = GetFrameTime()*100;
-    if(TileSet == 0){
-        PlayerChunk[0] = (int)Player[0]/MapScale;
-        PlayerChunk[1] = (int)Player[1]/MapScale;
-    }else{
-        PlayerChunk[0] = (int)Player[0]/(MapScale/2);
-        PlayerChunk[1] = (int)Player[1]/(MapScale/2);
-    }
-    switch (dir){
-        case 0:
-            if(CantWalkThrough()){
-                CameraPos[0] += Player[2]*DeltaTime;
-                Player[0] += Player[2]*DeltaTime;
-            }
-            break;
-        case 1:
-            if(CantWalkThrough()){
-                CameraPos[2] += Player[2]*DeltaTime;
-                Player[1] += Player[2]*DeltaTime;
-            }
-            break;
-        case 2:
-            if(CantWalkThrough()){
-                CameraPos[0] -= Player[2]*DeltaTime;
-                Player[0] -= Player[2]*DeltaTime;
-            }
-            break;
-        case 3:
-            if(CantWalkThrough()){
-                CameraPos[2] -= Player[2]*DeltaTime;
-                Player[1] -= Player[2]*DeltaTime;
-            }
-            break;
-        case 4:
-            if(CantWalkThrough()){
-                CameraPos[0] += Player[2]*DeltaTime;
-                Player[0] += Player[2]*DeltaTime;
-                CameraPos[2] += Player[2]*DeltaTime;
-                Player[1] += Player[2]*DeltaTime;
-            }
-            break;
-        case 5:
-            if(CantWalkThrough()){
-                CameraPos[0] -= Player[2]*DeltaTime;
-                Player[0] -= Player[2]*DeltaTime;
-                CameraPos[2] += Player[2]*DeltaTime;
-                Player[1] += Player[2]*DeltaTime;
-            }
-            break;
-        case 6:
-            if(CantWalkThrough()){
-                CameraPos[0] -= Player[2]*DeltaTime;
-                Player[0] -= Player[2]*DeltaTime;
-                CameraPos[2] -= Player[2]*DeltaTime;
-                Player[1] -= Player[2]*DeltaTime;
-            }
-            break;
-        case 7:
-            if(CantWalkThrough()){
-                CameraPos[0] += Player[2]*DeltaTime;
-                Player[0] += Player[2]*DeltaTime;
-                CameraPos[2] -= Player[2]*DeltaTime;
-                Player[1] -= Player[2]*DeltaTime;
-            }
-            break;
-    }
 }
 
 void PlayerMovement(){
@@ -189,73 +128,135 @@ void PlayerMovement(){
     }
 
     int TEMP = 0;
+    float TEMP2 = Player[2]/1.5*DeltaTime;
+    float TEMPS = TEMP2/sqrt(2);
     if(!IsTalking){
         //Diagonal Movement
         if(IsMKeyDown(1) && IsMKeyDown(0) && !IsMKeyDown(3) && !IsMKeyDown(2)){
-            CameraPos[2] -= Player[2]/1.5*DeltaTime;
-            Player[1] -= Player[2]/1.5*DeltaTime;
-            CameraPos[0] -= Player[2]/1.5*DeltaTime;
-            Player[0] -= Player[2]/1.5*DeltaTime;
-            Player[4] = 1;
-            TEMP++;
-            CollisonDetection(4);
+            if(!CantWalkThrough(Player[0] - TEMP2, Player[1] - TEMP2)){
+                CameraPos[0] -= TEMPS;
+                Player[0] -= TEMPS;
+                CameraPos[2] -= TEMPS;
+                Player[1] -= TEMPS;
+                Player[4] = 1;
+                TEMP++;
+            }else{
+                if(!CantWalkThrough(Player[0] - TEMP2, Player[1])){
+                    CameraPos[0] -= TEMP2;
+                    Player[0] -= TEMP2;
+                    Player[4] = 0;
+                    TEMP++;
+                }
+                if(!CantWalkThrough(Player[0], Player[1] - TEMP2)){
+                    CameraPos[2] -= TEMP2;
+                    Player[1] -= TEMP2;
+                    Player[4] = 1;
+                    TEMP++;
+                }
+            }
         }
         if(IsMKeyDown(0) && !IsMKeyDown(1) && IsMKeyDown(3) && !IsMKeyDown(2)){
-            CameraPos[2] += Player[2]/1.5*DeltaTime;
-            Player[1] += Player[2]/1.5*DeltaTime;
-            CameraPos[0] -= Player[2]/1.5*DeltaTime;
-            Player[0] -= Player[2]/1.5*DeltaTime;
-            Player[4] = 3;
-            TEMP++;
-            CollisonDetection(7);
+            if(!CantWalkThrough(Player[0] - TEMP2, Player[1] + TEMP2)){
+                CameraPos[0] -= TEMPS;
+                Player[0] -= TEMPS;
+                CameraPos[2] += TEMPS;
+                Player[1] += TEMPS;
+                Player[4] = 3;
+                TEMP++;
+            }else{
+                if(!CantWalkThrough(Player[0] - TEMP2, Player[1])){
+                    CameraPos[0] -= TEMP2;
+                    Player[0] -= TEMP2;
+                    Player[4] = 0;
+                    TEMP++;
+                }   
+                if(!CantWalkThrough(Player[0], Player[1] + TEMP2)){
+                    CameraPos[2] += TEMP2;
+                    Player[1] += TEMP2;
+                    Player[4] = 3;
+                    TEMP++;
+                }
+            }
         }
         if(IsMKeyDown(3) && !IsMKeyDown(0) && !IsMKeyDown(1) && IsMKeyDown(2)){
-            CameraPos[2] += Player[2]/1.5*DeltaTime;
-            Player[1] += Player[2]/1.5*DeltaTime;
-            CameraPos[0] += Player[2]/1.5*DeltaTime;
-            Player[0] += Player[2]/1.5*DeltaTime;
-            Player[4] = 3;
-            TEMP++;
-            CollisonDetection(6);
+            if(!CantWalkThrough(Player[0] + TEMP2, Player[1] + TEMP2)){
+                CameraPos[0] += TEMPS;
+                Player[0] += TEMPS;
+                CameraPos[2] += TEMPS;
+                Player[1] += TEMPS;
+                Player[4] = 3;
+                TEMP++;
+            }else{
+                if(!CantWalkThrough(Player[0] + TEMP2, Player[1])){
+                    CameraPos[0] += TEMP2;
+                    Player[0] += TEMP2;
+                    Player[4] = 2;
+                    TEMP++;
+                }
+                if(!CantWalkThrough(Player[0], Player[1] + TEMP2)){
+                    CameraPos[2] += TEMP2;
+                    Player[1] += TEMP2;
+                    Player[4] = 3;
+                    TEMP++;
+                }
+            }
         }
         if(IsMKeyDown(2) && !IsMKeyDown(0) && !IsMKeyDown(3) && IsMKeyDown(1)){
-            CameraPos[2] -= Player[2]/1.5*DeltaTime;
-            Player[1] -= Player[2]/1.5*DeltaTime;
-            CameraPos[0] += Player[2]/1.5*DeltaTime;
-            Player[0] += Player[2]/1.5*DeltaTime;
-            Player[4] = 1;
-            TEMP++;
-            CollisonDetection(5);
+            if(!CantWalkThrough(Player[0] + TEMP2, Player[1] - TEMP2)){
+                CameraPos[0] += TEMPS;
+                Player[0] += TEMPS;
+                CameraPos[2] -= TEMPS;
+                Player[1] -= TEMPS;
+                Player[4] = 1;
+                TEMP++;
+            }else{
+                if(!CantWalkThrough(Player[0] + TEMP2, Player[1])){
+                    CameraPos[0] += TEMP2;
+                    Player[0] += TEMP2;
+                    Player[4] = 2;
+                    TEMP++;
+                }   
+                if(!CantWalkThrough(Player[0], Player[1] - TEMP2)){
+                    CameraPos[2] -= TEMP2;
+                    Player[1] -= TEMP2;
+                    Player[4] = 1;
+                    TEMP++;
+                }
+            }
         }
 
         //Straight Movement
         if(IsMKeyDown(1) && !IsMKeyDown(0) && !IsMKeyDown(3) && !IsMKeyDown(2)){
-            CameraPos[2] -= Player[2]*DeltaTime;
-            Player[1] -= Player[2]*DeltaTime;
-            Player[4] = 1;
-            TEMP++;
-            CollisonDetection(1);
+            if(!CantWalkThrough(Player[0], Player[1] - TEMP2)){
+                CameraPos[2] -= TEMP2;
+                Player[1] -= TEMP2;
+                Player[4] = 1;
+                TEMP++;
+            }
         }
         if(IsMKeyDown(0) && !IsMKeyDown(1) && !IsMKeyDown(3) && !IsMKeyDown(2)){
-            CameraPos[0] -= Player[2]*DeltaTime;
-            Player[0] -= Player[2]*DeltaTime;
-            Player[4] = 0;
-            TEMP++;
-            CollisonDetection(0);
+            if(!CantWalkThrough(Player[0] - TEMP2, Player[1])){
+                CameraPos[0] -= TEMP2;
+                Player[0] -= TEMP2;
+                Player[4] = 0;
+                TEMP++;
+            }
         }
         if(IsMKeyDown(3) && !IsMKeyDown(0) && !IsMKeyDown(1) && !IsMKeyDown(2)){
-            CameraPos[2] += Player[2]*DeltaTime;
-            Player[1] += Player[2]*DeltaTime;
-            Player[4] = 3;
-            TEMP++;
-            CollisonDetection(3);
+            if(!CantWalkThrough(Player[0], Player[1] + TEMP2)){
+                CameraPos[2] += TEMP2;
+                Player[1] += TEMP2;
+                Player[4] = 3;
+                TEMP++;
+            }
         }
         if(IsMKeyDown(2) && !IsMKeyDown(0) && !IsMKeyDown(3) && !IsMKeyDown(1)){
-            CameraPos[0] += Player[2]*DeltaTime;
-            Player[0] += Player[2]*DeltaTime;
-            Player[4] = 2;
-            TEMP++;
-            CollisonDetection(2);
+            if(!CantWalkThrough(Player[0] + TEMP2, Player[1])){
+                CameraPos[0] += TEMP2;
+                Player[0] += TEMP2;
+                Player[4] = 2;
+                TEMP++;
+            }
         }
     }
 

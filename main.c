@@ -9,7 +9,7 @@ int GameState = 0;
 float Banim;
 bool Banimating;
 
-bool Debug = true;
+bool Debug = false;
 
 void IntBattle();
 
@@ -76,6 +76,7 @@ int main() {
     PlayMusicStream(music);
 
     SetConfigFlags(FLAG_MSAA_4X_HINT || FLAG_VSYNC_HINT); 
+    //SetTargetFPS(60);
 
     InitWindow(screenWidth, screenHeight, "RPG Game");
     SetWindowSize(GetMonitorWidth(GetCurrentMonitor()*2), GetMonitorHeight(GetCurrentMonitor()*2));
@@ -88,7 +89,7 @@ int main() {
 
     target = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
-    SwitchMap(1);
+    SwitchMap(0);
 
     while (!WindowShouldClose())
     { 
